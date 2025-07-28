@@ -86,12 +86,12 @@ import org.xml.sax.SAXException;
  * ICU's readme for the similar test:
  *  http://source.icu-project.org/repos/icu/icu/trunk/source/test/letest/readme.html
  *
- * @bug 8054203
  * @test
+ * @bug 8054203
  * @summary manual test of layout engine behavior. Takes an XML control file.
  * @compile TestLayoutVsICU.java
  * @author srl
- * @run main/manual
+ * @run main/manual TestLayoutVsICU
  */
 public class TestLayoutVsICU {
 
@@ -126,7 +126,6 @@ public class TestLayoutVsICU {
      */
     public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {
         System.out.println("Java " + System.getProperty("java.version") + " from " + System.getProperty("java.vendor"));
-        TestLayoutVsICU tlvi = null;
         for(String arg : args) {
             if(arg.equals("-d")) {
                 OPT_DRAW = true;
@@ -136,31 +135,26 @@ public class TestLayoutVsICU {
                 OPT_VERBOSE = true;
             } else if(arg.equals("-f")) {
                 OPT_FAILMISSING = true;
-            } else {
-                if(tlvi == null) {
-                    tlvi = new TestLayoutVsICU();
-                }
-                try {
-                    tlvi.show(arg);
-                } finally {
-                    if(OPT_VERBOSE) {
-                        System.out.println("# done with " + arg);
-                    }
-                }
             }
         }
+        TestLayoutVsICU tlvi = new TestLayoutVsICU();
+        String dir = System.getProperty("test.src");
+        String sep = System.getProperty("file.separator");
+        if (dir == null) {
+            dir = ".";
+        }
+        String xml = dir + sep + "TestLayoutVsICU_jdkbase.xml";
+        tlvi.show(xml);
+        if(OPT_VERBOSE) {
+            System.out.println("# done with " + arg);
+        }
+        System.out.println("\n\nRESULTS:\n");
+        System.out.println(skipped+"\tskipped due to missing font");
+        System.out.println(total+"\ttested of which:");
+        System.out.println(bad+"\twere bad");
 
-        if(tlvi == null) {
-            throw new IllegalArgumentException("No XML input. Usage: " + TestLayoutVsICU.class.getSimpleName() + " [-d][-v][-f] letest.xml ...");
-        } else {
-            System.out.println("\n\nRESULTS:\n");
-            System.out.println(skipped+"\tskipped due to missing font");
-            System.out.println(total+"\ttested of which:");
-            System.out.println(bad+"\twere bad");
-
-            if(bad>0) {
-                throw new InternalError("One or more failure(s)");
-            }
+        if(bad>0) {
+            throw new InternalError("One or more failure(s)");
         }
     }
 
