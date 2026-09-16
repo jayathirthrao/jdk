@@ -30,6 +30,7 @@
  * @run main/othervm -Dsun.java2d.uiScale=1 SourceClippingBlitTest
  */
 
+import javax.imageio.ImageIO;
 import java.awt.AWTException;
 import java.awt.Canvas;
 import java.awt.Color;
@@ -50,6 +51,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.VolatileImage;
+import java.io.File;
+import java.io.IOException;
 
 public class SourceClippingBlitTest extends Canvas {
     static final int TESTW = 300;
@@ -238,6 +241,11 @@ public class SourceClippingBlitTest extends Canvas {
                 }
                 if (grabbedBI.getRGB(x, y) != rgb) {
                     String msg1 = "Test failed at x="+x+" y="+y;
+                    String name = "SourceClippingBlitTest.png";
+                    try {
+                        ImageIO.write(grabbedBI, "png", new File(name));
+                        System.out.println("Dumped res to: "+name);
+                    } catch (IOException e) {}
                     System.out.println(msg1);
                     System.out.println(" expected: "+Integer.toHexString(rgb)+
                         " got:"+Integer.toHexString(grabbedBI.getRGB(x, y)));
