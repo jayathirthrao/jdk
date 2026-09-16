@@ -27,7 +27,7 @@
  * @bug 6244574 6258142 6395165 6588884
  * @summary Tests that source is clipped correctly when blitting
  * different types of images to the screen
- * @run main SourceClippingBlitTest
+ * @run main/othervm -Dsun.java2d.uiScale=1 SourceClippingBlitTest
  */
 
 import java.awt.Canvas;
@@ -37,7 +37,10 @@ import java.awt.EventQueue;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.GraphicsConfiguration;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Robot;
@@ -61,7 +64,13 @@ public class SourceClippingBlitTest extends Canvas {
     private static void createAndShowGUI() {
         test = new SourceClippingBlitTest();
         frame = new Frame("SourceClippingBlitTest");
-        frame.add(test);
+        frame.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.insets = new Insets(50, 50, 50, 50);
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        frame.add(test, c);
         frame.setAlwaysOnTop(true);
         frame.setLocationRelativeTo(null);
         frame.pack();
@@ -194,8 +203,8 @@ public class SourceClippingBlitTest extends Canvas {
 
         // we do implicit clipping of the destination surface
         // by only checking pixels within its bounds
-        for (int y = 1; y < h / 2 ; y++) {
-            for (int x = 1; x < w / 2; x++) {
+        for (int y = 0; y < h ; y++) {
+            for (int x = 0; x < w; x++) {
                 int rgb = 0;
                 if (newDstRect.contains(x, y)) {
                     rgb = Color.red.getRGB();
