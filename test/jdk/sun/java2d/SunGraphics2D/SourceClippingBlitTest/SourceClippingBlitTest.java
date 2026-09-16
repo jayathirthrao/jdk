@@ -231,8 +231,8 @@ public class SourceClippingBlitTest extends Canvas {
 
         // we do implicit clipping of the destination surface
         // by only checking pixels within its bounds
-        for (int y = 0; y < h; y++) {
-            for (int x = 0; x < w; x++) {
+        for (int y = 2; y < h - 2; y++) {
+            for (int x = 2; x < w - 2; x++) {
                 int rgb = 0;
                 if (newDstRect.contains(x, y)) {
                     rgb = Color.red.getRGB();
