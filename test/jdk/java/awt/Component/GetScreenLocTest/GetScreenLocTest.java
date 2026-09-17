@@ -90,6 +90,7 @@ public class GetScreenLocTest {
         bigFrame = new Frame();
         bigFrame.setSize(200, 200);
         bigFrame.setLocationRelativeTo(null);
+        bigFrame.setAlwaysOnTop(true);
         bigFrame.setVisible(true);
         smallFrame = new Frame();
         smallFrame.setLayout(new GridBagLayout());
@@ -126,6 +127,7 @@ public class GetScreenLocTest {
                 }
             }
         });
+        smallFrame.setAlwaysOnTop(true);
         smallFrame.pack();
         smallFrame.setVisible(true);
     }
