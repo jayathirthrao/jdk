@@ -44,6 +44,7 @@ import java.awt.event.MouseEvent;
  * @bug 4356202
  * @summary Tests that getLocationOnScreen returns valid value(WindowMaker
  *          only).
+ * @run main/othervm -Dsun.java2d.uiScale=1 GetScreenLocTest
  */
 
 public class GetScreenLocTest {
@@ -67,6 +68,7 @@ public class GetScreenLocTest {
 
     private static void test() throws Exception {
         robot = new Robot();
+        robot.setAutoDelay(100);
         bigPause();
 
         EventQueue.invokeAndWait(() -> {
@@ -90,7 +92,6 @@ public class GetScreenLocTest {
         bigFrame = new Frame();
         bigFrame.setSize(200, 200);
         bigFrame.setLocationRelativeTo(null);
-        bigFrame.setAlwaysOnTop(true);
         bigFrame.setVisible(true);
         smallFrame = new Frame();
         smallFrame.setLayout(new GridBagLayout());
@@ -100,13 +101,13 @@ public class GetScreenLocTest {
         c.weightx = 1.0;
         c.weighty = 1.0;
         smallFrame.setSize(120, 150);
-        smallFrame.setLocationRelativeTo(null);
 
         canvas = new MyCanvas();
         smallFrame.add(canvas, c);
 
         canvas.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
+                System.out.println("Received mouse press at:" + e);
                 switch(state) {
                     case 0: // the first event should be (0,0)
                         if (e.getX() != 0 || e.getY() != 0) {
@@ -124,11 +125,13 @@ public class GetScreenLocTest {
                         break;
                     case 2: // this should never happen
                         System.out.println("state 2: wrong location " + e);
+                        throw new RuntimeException("Received invalid" +
+                            " mouse event");
                 }
             }
         });
-        smallFrame.setAlwaysOnTop(true);
         smallFrame.pack();
+        smallFrame.setLocationRelativeTo(null);
         smallFrame.setVisible(true);
     }
 
