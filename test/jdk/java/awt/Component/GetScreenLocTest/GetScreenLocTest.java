@@ -132,6 +132,7 @@ public class GetScreenLocTest {
         });
         smallFrame.pack();
         smallFrame.setLocationRelativeTo(null);
+        smallFrame.setAlwaysOnTop(true);
         smallFrame.setVisible(true);
     }
 
